@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans    
+        http://www.springframework.org/schema/beans/spring-beans.xsd    
+        http://www.springframework.org/schema/context     
+        http://www.springframework.org/schema/context/spring-context.xsd    
+        http://www.springframework.org/schema/mvc    
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+        ">
+
+    <!--配置注解适配器与注解映射器 ，并指定我们自己的参数转换器 -->
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+    <!--扫描controller包-->
+    <context:component-scan base-package="cn.jarvan.controller"></context:component-scan>
+    <!--注入我们自己的参数转换器 -->
+    <bean id="conversionService"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="cn.jarvan.converter.StringForDate"/>
+            </list>
+        </property>
+    </bean>
+   <!--配置swargger-->
+    <bean class="cn.jarvan.config.SwaggerConfig"/>
+    <!--重要！配置swagger资源不被拦截-->
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+    <mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/" />
+    <!--配置文件上传
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="104857600" />&lt;!&ndash;100MB &ndash;&gt;
+        <property name="maxInMemorySize" value="4096" />
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>-->
+
+    <!--配置视图解析器 -->
+    <!--
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/jsp/" />
+        <property name="suffix" value=".jsp"/>
+        </bean>
+         -->
+
+    <!--防止静态资源被加载 -->
+    <mvc:default-servlet-handler/>
+</beans>

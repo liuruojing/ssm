@@ -5,7 +5,7 @@
     <parent>
         <groupId>cn.jarvan.ssm</groupId>
         <artifactId>ssm-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1.0</version>
         <relativePath>../ssm-parent/pom.xml</relativePath>
     </parent>
 
@@ -13,6 +13,66 @@
     <groupId>cn.jarvan.ssm</groupId>
     <artifactId>ssm-cs</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
+    <dependencies>
+        <!--Mysql 驱动-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.38</version>
+        </dependency>
+        <!-- MySQL end -->
+
+        <!--dbcp -->
+        <!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!--dbcp end-->
+
+        <!-- c3p0-->
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
+            <version>0.9.2.1</version>
+        </dependency>
+        <!-- c3p0 end -->
+
+        <!-- MyBatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.2.5</version>
+        </dependency>
+        <!-- MyBatis end -->
+
+        <!-- MyBatis-Spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <!-- MyBatis-Spring end -->
+
+        <!-- pageHelper -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>4.1.4</version>
+        </dependency>
+        <!-- pageHelper end-->
+        <dependency>
+            <groupId>cn.jarvan.ssm</groupId>
+            <artifactId>ssm-model</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.jarvan.ssm</groupId>
+            <artifactId>ssm-commons</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+    </dependencies>
 </project>

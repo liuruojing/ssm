@@ -7,7 +7,7 @@
     <groupId>cn.jarvan.ssm</groupId>
     <artifactId>ssm-build</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <modules>
             <module>../ssm-parent</module>
             <module>../ssm-commons</module>
