@@ -6,7 +6,7 @@ Introduction
 3.项目中的所有细节都会按照企业级开发的标准，教你如何遵循代码规范以及类文件doc注释的编写。<br/>
 4.采用RESTFul的controller接口，教你RESTFul风格的API编写<br/>
 5.Junit单元测试，教你如何正确的使用Junit单元测试验证自己接口代码的健壮性，个人博客中也会出相应博文教你如何查看Junit单元测试的代码覆盖率<br/>
-
+6.采用h2内存数据库供junit使用
 涉及到的技术
 ====
 springmvc+spring+mybatis：轻量级敏捷开发框架<br/>
@@ -14,7 +14,7 @@ swargger:快速构建RestFul接口测试页面<br/>
 shiro：Apache开源权限管理框架，包括登录验证，授权，加密，会话管理<br/>
 redis：Nosql数据库，搭配shiro的会话管理功能将session存入redis中，实现tomcat多服务器集群的session共享<br/>
 nginx：反向代理服务器，用来调度多台tomcat<br/>
-
+h2：内存数据库
 开发环境
 ====
 jdk1.8+mysql5.7.22+tomcat8.5.32+IDEA<br/>
@@ -48,10 +48,14 @@ service层和dao层，提供具体的业务逻辑和数据库访问，需要依�
 #### ssm-rs<br/>
 controller层，提供RESTFul接口。<br/>
 
-#### 个人博客<br/>
+个人博客
+====
 http://119.29.59.101/blog/index.action<br/>
 
-#### 联系方式<br/>
+联系方式
+====
 809882301@qq.com<br/>
-#### need your help<br/>
+
+need your help
+====
 如果我的分享让客官从中受益了,打发一点服务器租赁费给小的吧<br/>
