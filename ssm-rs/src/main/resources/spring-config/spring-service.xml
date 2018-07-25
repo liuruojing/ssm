@@ -20,6 +20,7 @@
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
     <!--开启注解方式配置事务 只要是有事务注解的方法，都会被动态代理 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

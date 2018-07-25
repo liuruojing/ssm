@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.jarvan.dao.user.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="cn.jarvan.model.user.Permission" >
+    <id column="permission_id" property="permissionId" jdbcType="BIGINT" />
+    <result column="permission_name" property="permissionName" jdbcType="VARCHAR" />
+    <result column="perimission_url" property="perimissionUrl" jdbcType="VARCHAR" />
+    <result column="permissioon_type" property="permissioonType" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    permission_id, permission_name, perimission_url, permissioon_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tra_permission
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tra_permission
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tra_permission
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.jarvan.model.user.Permission" >
+    <selectKey resultType="java.lang.Long" keyProperty="permissionId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tra_permission (permission_name, perimission_url, permissioon_type
+      )
+    values (#{permissionName,jdbcType=VARCHAR}, #{perimissionUrl,jdbcType=VARCHAR}, #{permissioonType,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.jarvan.model.user.Permission" >
+    <selectKey resultType="java.lang.Long" keyProperty="permissionId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tra_permission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionName != null" >
+        permission_name,
+      </if>
+      <if test="perimissionUrl != null" >
+        perimission_url,
+      </if>
+      <if test="permissioonType != null" >
+        permissioon_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionName != null" >
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="perimissionUrl != null" >
+        #{perimissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissioonType != null" >
+        #{permissioonType,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.jarvan.model.user.Permission" >
+    update tra_permission
+    <set >
+      <if test="permissionName != null" >
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="perimissionUrl != null" >
+        perimission_url = #{perimissionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="permissioonType != null" >
+        permissioon_type = #{permissioonType,jdbcType=BIGINT},
+      </if>
+    </set>
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.jarvan.model.user.Permission" >
+    update tra_permission
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      perimission_url = #{perimissionUrl,jdbcType=VARCHAR},
+      permissioon_type = #{permissioonType,jdbcType=BIGINT}
+    where permission_id = #{permissionId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -24,16 +24,16 @@
  <!--配置监听器，服务器启动后自动加载spring的配置文件,启动spring容器-->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring-config/spring-service.xml,classpath:spring-config/spring-dao.xml<!--,classpath:spring-config/spring-shiro.xml--></param-value>
+    <param-value>classpath:spring-config/spring-service.xml,classpath:spring-config/spring-dao.xml,classpath:spring-config/spring-shiro.xml</param-value>
   </context-param>
 
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
--->
 
- <!-- 配置shiro
+
+ <!-- 配置shiro-->
   <filter>
     <filter-name>shiroFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -46,7 +46,7 @@
   <filter-mapping>
     <filter-name>shiroFilter</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>-->
+  </filter-mapping>
 
   <!--springmvc dispatcher -->
   <servlet>

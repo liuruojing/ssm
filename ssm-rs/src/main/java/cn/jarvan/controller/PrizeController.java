@@ -130,6 +130,7 @@ public class PrizeController {
      * @return ResponseEntity
      * @since ssm-rs 0.1.0
      */
+
     @GetMapping(value = "/prize/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据id查询奖品", notes = "查询奖品")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "successful request", response = Prize.class),
