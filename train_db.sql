@@ -15,6 +15,22 @@ Date: 2018-07-27 15:17:28
 
 SET FOREIGN_KEY_CHECKS=0;
 
+
+-- ----------------------------
+-- Table structure for tra_permissiontype
+-- ----------------------------
+DROP TABLE IF EXISTS `tra_permissiontype`;
+CREATE TABLE `tra_permissiontype` (
+  `permissonType_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `permissionType_name` varchar(255) NOT NULL,
+  KEY `permissonType_id` (`permissonType_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tra_permissiontype
+-- ----------------------------
+INSERT INTO `tra_permissiontype` VALUES ('1', '奖品管理');
+
 -- ----------------------------
 -- Table structure for tra_permission
 -- ----------------------------
@@ -36,21 +52,6 @@ INSERT INTO `tra_permission` VALUES ('1', 'prize:add', '/v1.0/prize/add', '1');
 INSERT INTO `tra_permission` VALUES ('2', 'prize:delete', '/v1.0/prize/delete/*', '1');
 INSERT INTO `tra_permission` VALUES ('3', 'prize:update', '/v1.0/prize/update/*', '1');
 INSERT INTO `tra_permission` VALUES ('4', 'prize:get', '/v1.0/prize/get/*', '1');
-
--- ----------------------------
--- Table structure for tra_permissiontype
--- ----------------------------
-DROP TABLE IF EXISTS `tra_permissiontype`;
-CREATE TABLE `tra_permissiontype` (
-  `permissonType_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `permissionType_name` varchar(255) NOT NULL,
-  KEY `permissonType_id` (`permissonType_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of tra_permissiontype
--- ----------------------------
-INSERT INTO `tra_permissiontype` VALUES ('1', '奖品管理');
 
 -- ----------------------------
 -- Table structure for tra_prizes
