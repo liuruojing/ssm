@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-07-26 09:12:10
+Date: 2018-07-27 15:17:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,12 +27,15 @@ CREATE TABLE `tra_permission` (
   PRIMARY KEY (`permission_id`),
   KEY `FK_permissionType` (`permissioon_type`),
   CONSTRAINT `FK_permissionType` FOREIGN KEY (`permissioon_type`) REFERENCES `tra_permissiontype` (`permissonType_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tra_permission
 -- ----------------------------
-INSERT INTO `tra_permission` VALUES ('1', 'prize:add', '/v1.0/prize', '1');
+INSERT INTO `tra_permission` VALUES ('1', 'prize:add', '/v1.0/prize/add', '1');
+INSERT INTO `tra_permission` VALUES ('2', 'prize:delete', '/v1.0/prize/delete/*', '1');
+INSERT INTO `tra_permission` VALUES ('3', 'prize:update', '/v1.0/prize/update/*', '1');
+INSERT INTO `tra_permission` VALUES ('4', 'prize:get', '/v1.0/prize/get/*', '1');
 
 -- ----------------------------
 -- Table structure for tra_permissiontype
@@ -58,13 +61,28 @@ CREATE TABLE `tra_prizes` (
   `prize_name` varchar(50) NOT NULL COMMENT '奖品名称',
   `created_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`prize_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of tra_prizes
 -- ----------------------------
-INSERT INTO `tra_prizes` VALUES ('1', 'string', '2018-07-25 11:55:18');
-INSERT INTO `tra_prizes` VALUES ('2', 'string', '2018-07-25 14:54:39');
+INSERT INTO `tra_prizes` VALUES ('15', 'string', '2018-07-26 11:49:10');
+INSERT INTO `tra_prizes` VALUES ('16', 'string', '2018-07-26 12:00:43');
+INSERT INTO `tra_prizes` VALUES ('17', 'string', '2018-07-26 12:01:55');
+INSERT INTO `tra_prizes` VALUES ('18', 'string', '2018-07-26 12:03:16');
+INSERT INTO `tra_prizes` VALUES ('19', 'string', '2018-07-26 17:25:47');
+INSERT INTO `tra_prizes` VALUES ('20', 'string', '2018-07-26 17:27:47');
+INSERT INTO `tra_prizes` VALUES ('21', 'string', '2018-07-26 17:31:54');
+INSERT INTO `tra_prizes` VALUES ('22', 'string', '2018-07-26 17:54:20');
+INSERT INTO `tra_prizes` VALUES ('23', 'string', '2018-07-27 08:46:05');
+INSERT INTO `tra_prizes` VALUES ('24', 'string', '2018-07-27 09:00:45');
+INSERT INTO `tra_prizes` VALUES ('25', 'string', '2018-07-27 11:06:17');
+INSERT INTO `tra_prizes` VALUES ('26', 'string', '2018-07-27 14:45:56');
+INSERT INTO `tra_prizes` VALUES ('27', 'string', '2018-07-27 14:54:25');
+INSERT INTO `tra_prizes` VALUES ('28', 'string', '2018-07-27 14:55:07');
+INSERT INTO `tra_prizes` VALUES ('29', 'string', '2018-07-27 14:56:29');
+INSERT INTO `tra_prizes` VALUES ('30', 'string', '2018-07-27 14:58:23');
+INSERT INTO `tra_prizes` VALUES ('31', 'string', '2018-07-27 15:05:13');
 
 -- ----------------------------
 -- Table structure for tra_role

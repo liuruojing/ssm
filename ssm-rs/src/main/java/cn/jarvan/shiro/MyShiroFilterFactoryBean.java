@@ -1,18 +1,15 @@
 package cn.jarvan.shiro;
 
-import cn.jarvan.dao.user.PermissionMapper;
-import cn.jarvan.model.user.Permission;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import java.io.InputStream;
+import java.sql.*;
+import java.util.*;
 
 /**
  * <b><code>MyShiroFilterFactoryBean</code></b>
  * <p>
- * Description.
+ * 继承shiro的ShiroFilterFactoryBean，实现权限动态加载.
  * <p>
  * <b>Creation Time:</b> 2018/7/25 9:11.
  *
@@ -20,22 +17,72 @@ import java.util.Map;
  * @since ssm 0.1.0
  */
 public class MyShiroFilterFactoryBean extends ShiroFilterFactoryBean{
-    @Autowired
-    PermissionMapper permissionMapper;
+    /**
+     * 得到数据库连接.
+     *
+     * @param
+     * @return Connection
+     * @author liuruojing
+     * @since ${PROJECT_NAME} 0.1.0
+     */
+    private Connection getConnection(){
+        Properties prop = new Properties();
+        Connection conn=null;
+        try {
+            ClassLoader classLoader = this.getClass().getClassLoader();// 读取属性文件xxxxx.properties
+            InputStream in = classLoader.getResourceAsStream("db.properties");
+            prop.load(in); /// 加载属性列表
+            String driver=prop.getProperty("driver");
+            String url=prop.getProperty("url");
+            String username=prop.getProperty("username");
+            String password=prop.getProperty("password");
+            Class.forName(driver);
+            conn= DriverManager.getConnection(url, username, password);
+
+        }
+        catch (Exception e){
+             e.printStackTrace();
+        }
+        return conn;
+
+    }
+
+    /**
+     * 动态加载数据库的权限信息.
+     *
+     * @param
+     * @return
+     * @author liuruojing
+     * @since ${PROJECT_NAME} 0.1.0
+     */
     @Override
     public void setFilterChainDefinitions(String definitions){
-//        Map<String,String> filterChainDefinitionMap= new HashMap<>();
-//        List<Permission> permissions = permissionMapper.selectAll();
-//        Iterator<Permission> it = permissions.iterator();
-//        Permission permission = null;
-//        while (it.hasNext()) {
-//            permission = it.next();
-//            //将需要权限的路径放入拦截链(特定的权限,系统所有的链接全放到permission表，一个链接对应一个权限，系统初始化录入时录入所有初始数据)
-//            filterChainDefinitionMap.put(permission.getPerimissionUrl(),"perms["+permission.getPermissionName()+"]");
-//        }
-//            //未录入的路径则不需要任何权限，也不需要登录
-//            filterChainDefinitionMap.put("/**","anon");
-        super.setFilterChainDefinitions(definitions);
+
+        Connection conn=getConnection();
+        Map<String,String> filterChainDefinitionMap= new LinkedHashMap<>();/*坑点！！！HashMap是无序的,不能用！！！*/
+        Statement pre= null;
+        ResultSet rs=null;
+        try {
+            pre = conn.createStatement();
+            rs=pre.executeQuery("select * from tra_permission");
+            while(rs.next()){
+                filterChainDefinitionMap.put(rs.getString("perimission_url"),"perms["+rs.getString("permission_name")+"]");
+            }
+            filterChainDefinitionMap.put("/**","anon");
+            if(rs != null) {
+                rs.close();
+            }
+            if(pre!=null){
+                pre.close();
+            }
+            if(conn != null){
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        setFilterChainDefinitionMap(filterChainDefinitionMap);
     }
 
 

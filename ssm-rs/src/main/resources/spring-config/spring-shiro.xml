@@ -55,13 +55,14 @@
 	</bean>
 
 	<!-- 6. 配置 ShiroFilter -->
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	<bean id="shiroFilter" class="cn.jarvan.shiro.MyShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/needLogin"/><!--登录链接(未登录但是访问链接需要权限)-->
-		<property name="unauthorizedUrl" value="/unauthorized" /><!--未授权跳转链接(已登录但是权限不够) -->
+		<property name="loginUrl" value="/v1.0/unlogin"/><!--登录链接(提供给未登录但是访问链接需要权限或登录的跳转接口)-->
+		<property name="unauthorizedUrl" value="/v1.0/unauthorized" /><!--未授权跳转链接(已登录但是权限不够) -->
 
 		<property name="filterChainDefinitions">
 			<value>
+				/v1.0/prize=perms[prize:add] <!--无用，仅仅为了触发我们自己重写的set方法-->
 				/** = anon
 			</value>
 		</property>

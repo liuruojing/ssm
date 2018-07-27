@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
 
 
 /**
@@ -47,12 +50,13 @@ public class PrizeController {
      * @return ResponseEntity
      * @since ssm-rs 0.1.0
      */
-    @PostMapping(value = "/prize", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/prize/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加奖品", notes = "添加奖品")
     @ApiResponses(value = {@ApiResponse(code = 201, message = "created success"),
             @ApiResponse(code = 500, message = "internal server error"),
             @ApiResponse(code = 400, message = "Bad Request")})
     public final ResponseEntity<Object> insert(@ApiParam(value = "奖品信息", required = true) @RequestBody Prize prize) {
+
         if (verify(prize)) {
             try {
                 prizeService.insert(prize);
@@ -74,7 +78,7 @@ public class PrizeController {
      * @return ResponseEntity
      * @since ssm-rs 0.1.0
      */
-    @DeleteMapping(value = "/prize/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/prize/delete/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据id删除奖品", notes = "删除奖品")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "successful request"),
             @ApiResponse(code = 500, message = "internal server error"),
@@ -98,7 +102,7 @@ public class PrizeController {
      * @return ResponseEntity
      * @since ssm-rs 0.1.0
      */
-    @PutMapping(value = "/prize", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = "/prize/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改奖品信息", notes = "修改对应的奖品信息")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "successful request"),
             @ApiResponse(code = 500, message = "internal server error"),
@@ -131,7 +135,7 @@ public class PrizeController {
      * @since ssm-rs 0.1.0
      */
 
-    @GetMapping(value = "/prize/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/prize/get/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据id查询奖品", notes = "查询奖品")
     @ApiResponses(value = {@ApiResponse(code = 200, message = "successful request", response = Prize.class),
             @ApiResponse(code = 500, message = "internal server error"),
