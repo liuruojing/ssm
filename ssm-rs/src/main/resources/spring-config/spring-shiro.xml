@@ -13,7 +13,7 @@
 	<!-- 1. 配置 SecurityManager! -->
 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<!-- <property name="cacheManager" ref="cacheManager"/>配置缓存 -->
+		 <property name="cacheManager" ref="cacheManager"/><!--配置缓存-->
 		<property name="authenticator" ref="authenticator"></property><!--认证器 -->
 
 		<property name="realms">         <!--自定义认证组件 -->
@@ -26,9 +26,7 @@
 	</bean>
 
 	<!-- 2. 配置 CacheManager. -->
-	<!-- <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager"> 
-		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/> </bean> -->
-
+	 <bean id="cacheManager" class="cn.jarvan.shiro.RedisCacheManager"></bean>
 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
 		<property name="authenticationStrategy"><!--配置多认证器的认证方式 -->
 			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>

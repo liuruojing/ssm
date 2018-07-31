@@ -2,10 +2,12 @@ Introduction
 ====
 目的<br/>
 1.搭建一个最简洁，模块划分最明确的ssm+swargger+shiro+redis+nginx整合项目，采用maven作为构建工具，在有新项目开发时可以借助此demo快速构建项目<br/>
-2.配置文档中包含丰富的注释，手把手教新手搭建思路清晰的ssm项目框架<br/>
-3.项目中的所有细节都会按照企业级开发的标准，教你如何遵循代码规范以及类文件doc注释的编写。<br/>
-4.采用RESTFul的controller接口，教你RESTFul风格的API编写<br/>
-5.Junit单元测试，教你如何正确的使用Junit单元测试验证自己接口代码的健壮性，个人博客中也会出相应博文教你如何查看Junit单元测试的代码覆盖率<br/>
+2.实现shiro的授权信息缓存到redis数据库，减少关系数据库访问压力<br/>
+3.实现session共享到redis，实现多服务器集群方案<br/>
+4.配置文档中包含丰富的注释，手把手教新手搭建思路清晰的ssm项目框架<br/>
+5.项目中的所有细节都会按照企业级开发的标准，教你如何遵循代码规范以及类文件doc注释的编写。<br/>
+6.采用RESTFul的controller接口，教你RESTFul风格的API编写(shiro基于url的权限拦截与RESTFul API兼容性不好，后期可能会改写shiro以匹配RESTFul)<br/>
+7.Junit单元测试，教你如何正确的使用Junit单元测试验证自己接口代码的健壮性，个人博客中也会出相应博文教你如何查看Junit单元测试的代码覆盖率<br/>
 
 涉及到的技术
 ====
@@ -23,7 +25,8 @@ jdk1.8+mysql5.7.22+tomcat8.5.32+IDEA<br/>
 项目部署
 ====
 第一次部署项目<br/>
-1.修改ssm-rs\resources目录下database.properties的数据库账号密码信息<br/>
+1.修改ssm-rs\resources目录下db.properties的数据库账号密码信息<br/>
+2.启动redis服务端，修改ssm-commons\resources目录下jedis.properties的redis连接信息，没设置密码的话auth留空<br/>
 2.创建数据库train_db并执行根目录下的train_db.sql数据库脚本<br/>
 3.进入到ssm-build目录下，执行clean install -Dmaven.test.skip=true，对整个项目进行构建<br/> 
 4.启动ssm-rs项目，浏览器访问http://localhost/ssm-rs/swagger-ui.html<br/>
@@ -32,7 +35,7 @@ jdk1.8+mysql5.7.22+tomcat8.5.32+IDEA<br/>
 ====
 ssm-build <br/>
 项目聚合模块,可以进入该项目目录，对整个项目进行构建。<br/>
-clean install -Dmaven.test.skip=true <br/>
+mvn clean install -Dmaven.test.skip=true <br/>
 
 ssm-parent<br/>
 父模块，其他模块会继承该模块，引入公共的依赖<br/>

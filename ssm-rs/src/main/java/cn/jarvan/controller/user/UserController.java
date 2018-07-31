@@ -64,9 +64,20 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);//账号不存在
         } catch (AuthenticationException e) {
            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//Z帐号或密码错误
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//帐号或密码错误
         }
     }
+
+    @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "退出登录", notes = "退出登录")
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "退出登录成功"),
+            @ApiResponse(code = 500, message = "internal server error")})
+    public final ResponseEntity<?> logout(){
+         Subject currentUser=SecurityUtils.getSubject();
+         currentUser.logout();
+         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     /**
      *
      * 未登录拦截跳转接口 提供给shiro调用.
