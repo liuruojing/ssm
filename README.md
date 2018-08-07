@@ -63,3 +63,8 @@ http://119.29.59.101/blog/index.action<br/>
 need your help
 ====
 如果我的分享让客官从中受益了,打发一点服务器租赁费给小的吧<br/>
+
+坑点
+========
+1、如果你要把User类当做凭证，那么记得把你的User类实现序列化接口
+2、实现缓存时的cache名字如果key不为String类型，不要去拼接他生成新的带前缀的key，序列化破坏单例后导致缓存失效，因为key不一致（ShiroRedisCache类）
