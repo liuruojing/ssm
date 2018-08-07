@@ -9,6 +9,7 @@ import cn.jarvan.dao.user.*;
 import cn.jarvan.model.user.Permission;
 import cn.jarvan.model.user.Role;
 import cn.jarvan.model.user.User;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -18,7 +19,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ShiroRealm extends AuthorizingRealm {
@@ -49,10 +53,10 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = userMapper.selectByUsername(username);
         if (user == null) {  //账号不存在
            throw new UnknownAccountException();
-        } else {  //账号存在，交给shiro比对token与user中的密码
-            return new SimpleAuthenticationInfo(user, user.getUserPassword(), getName());
-        }
+        } else {  //账号存在，交给shiro比对token与user.getUserPassword()的密码
+            return new SimpleAuthenticationInfo(username, user.getUserPassword(), getName());
     }
+}
 
     /**
      * 授权，会在需要验证权限的时候被shiro调用，如果开启了缓存则只会第一次验证的时候被调用.
@@ -65,7 +69,8 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected final AuthorizationInfo doGetAuthorizationInfo(final PrincipalCollection principals) {
 
-        User user = (User) principals.getPrimaryPrincipal();
+        String username = (String) principals.getPrimaryPrincipal();
+        User  user = userMapper.selectByUsername(username);
         Set<String> roles = new HashSet<>();  //角色集合
         Set<String> permissions = new HashSet<>(); //权限集合
         //根据userId查出所拥有的roleId

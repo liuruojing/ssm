@@ -4,6 +4,9 @@ import cn.jarvan.model.Prize;
 import cn.jarvan.service.PrizeService;
 import io.swagger.annotations.*;
 import org.apache.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -56,7 +59,6 @@ public class PrizeController {
             @ApiResponse(code = 500, message = "internal server error"),
             @ApiResponse(code = 400, message = "Bad Request")})
     public final ResponseEntity<Object> insert(@ApiParam(value = "奖品信息", required = true) @RequestBody Prize prize) {
-
         if (verify(prize)) {
             try {
                 prizeService.insert(prize);

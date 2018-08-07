@@ -19,7 +19,7 @@ import org.junit.Assert;
 public class SerializableUtilsTest {
 
     @Test
-    public void Test() throws Exception {
+    public void Test() {
         Map<String,String> map = new HashMap<>();
         map.put("username","jarvan");
         byte[] bytes=cn.jarvan.commons.Serializable.SerializableUtils.serialize(map);

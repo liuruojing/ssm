@@ -5,66 +5,76 @@
         http://www.springframework.org/schema/beans    
         http://www.springframework.org/schema/beans/spring-beans.xsd    
         ">
-
-	
-
-	<!--shiro -->
-
 	<!-- 1. 配置 SecurityManager! -->
 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		 <property name="cacheManager" ref="cacheManager"/><!--配置缓存-->
-		<property name="authenticator" ref="authenticator"></property><!--认证器 -->
-
-		<property name="realms">         <!--自定义认证组件 -->
+		<property name="authenticator" ref="authenticator"></property><!--配置多认证器 -->
+		<property name="realms">         <!--配置realms -->
 			<list>
 				<ref bean="jdbcRealm" />
 			</list>
 		</property>
-
-
+		<property name="sessionManager" ref="sessionManager"/><!--sessionManager-->
+		<property name="cacheManager" ref="cacheManager"/><!--配置缓存-->
 	</bean>
 
-	<!-- 2. 配置 CacheManager. -->
-	 <bean id="cacheManager" class="cn.jarvan.shiro.RedisCacheManager"></bean>
+	<!-- shiro redisManager -->
+	<bean id="redisManager" class="cn.jarvan.commons.jedis.RedisManager">
+		<property name="host" value="127.0.0.1"/>
+		<property name="port" value="6379"/>
+		<property name="expire" value="1800"/><!--授权缓存和session的有效期间为30min-->
+		<!-- optional properties:
+        <property name="password" value="123456"/>
+        -->
+	</bean>
+
+	<!-- 配置sessionManager -->
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="redisSessionDAO" />
+	</bean>
+
+	<!-- redisSessionDAO -->
+	<bean id="redisSessionDAO" class="cn.jarvan.shiro.RedisSessionDao">
+		<property name="redisManager" ref="redisManager" />
+	</bean>
+
+	<!-- 配置cacheManager -->
+	<bean id="cacheManager" class="cn.jarvan.shiro.RedisCacheManager">
+		<property name="redisManager" ref="redisManager" />
+	</bean>
+
+	<!--3.配置多认证器 -->
 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
-		<property name="authenticationStrategy"><!--配置多认证器的认证方式 -->
+		<property name="authenticationStrategy">
 			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
 		</property>
 	</bean>
 
-
-	<!-- 3. 配置 Realm (认证和授权) -->
+	<!-- 4. 配置 Realm (认证和授权) -->
 	<bean id="jdbcRealm" class="cn.jarvan.shiro.realm.ShiroRealm">
-
+		<property name="cachingEnabled" value="true"/>
+		<!--启用身份验证缓存，即缓存AuthenticationInfo，默认false-->
+	    <!--<property name="authenticationCachingEnabled" value="true"/>-->
+		<!--启用授权缓存，即缓存AuthorizationInfo的信息，默认为false-->
+		<property name="authorizationCachingEnabled" value="true"/>
 	</bean>
 
-	<!-- 4. 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro 
+	<!-- 5. 配置 LifecycleBeanPostProcessor. 可以自定的来调用配置在 Spring IOC 容器中 shiro
 		bean 的生命周期方法. -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
-	<!-- 5. 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用. -->
-	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		depends-on="lifecycleBeanPostProcessor" />
-	<bean
-		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
-	</bean>
 
-	<!-- 6. 配置 ShiroFilter -->
+	<!-- 5. 配置 ShiroFilter -->
 	<bean id="shiroFilter" class="cn.jarvan.shiro.MyShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/v1.0/unlogin"/><!--登录链接(提供给未登录但是访问链接需要权限或登录的跳转接口)-->
 		<property name="unauthorizedUrl" value="/v1.0/unauthorized" /><!--未授权跳转链接(已登录但是权限不够) -->
-
 		<property name="filterChainDefinitions">
 			<value>
 				/v1.0/prize=perms[prize:add] <!--无用，仅仅为了触发我们自己重写的set方法-->
 				/** = anon
 			</value>
 		</property>
-
 
 	</bean>
 

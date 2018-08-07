@@ -1,6 +1,8 @@
 package cn.jarvan.model.user;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
     private Long userId;
 
     private String userName;

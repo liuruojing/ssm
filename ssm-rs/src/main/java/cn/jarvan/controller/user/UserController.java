@@ -10,6 +10,10 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,6 +48,8 @@ public class UserController {
    */
     @Autowired
     RoleMapper roleMapper;
+    @Autowired
+    UserMapper UserMapper;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "用户登录", notes = "用户登录")
@@ -58,7 +64,9 @@ public class UserController {
         token.setRememberMe(false);
         try {
             currentuser.login(token);
-            List<String> roles = roleMapper.selectRoleByUserId(((User) currentuser.getPrincipal()).getUserId());
+            User user = UserMapper.selectByUsername(((String) currentuser.getPrincipal()));
+            //得到该用户拥有的所有角色
+            List<String> roles = roleMapper.selectRoleByUserId(user.getUserId());
             return new ResponseEntity<>(roles, HttpStatus.OK);//登录成功
         } catch (UnknownAccountException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);//账号不存在
@@ -92,6 +100,7 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = 401, message = "未登录")})
     public ResponseEntity<?> unlogin()
     {
+
         Map<String,String> map=new HashMap<>();
         map.put("msg","请先登录");
         return new ResponseEntity<>(map,HttpStatus.UNAUTHORIZED);

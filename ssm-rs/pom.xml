@@ -91,16 +91,7 @@
     <!--Swargger end -->
 
     <!-- shiro begin -->
-    <dependency>
-      <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-ehcache</artifactId>
-      <version>1.2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache-core</artifactId>
-      <version>2.5.3</version>
-    </dependency>
+
     <dependency>
       <artifactId>quartz</artifactId>
       <groupId>org.opensymphony.quartz</groupId>
@@ -108,24 +99,37 @@
     </dependency>
     <dependency>
       <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-core</artifactId>
-      <version>1.2.2</version>
+      <artifactId>shiro-all</artifactId>
+      <version>1.2.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>1.2.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-web</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-quartz</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-spring</artifactId>
-      <version>1.2.2</version>
+      <version>1.2.5</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.crazycake</groupId>
+      <artifactId>shiro-redis</artifactId>
+      <version>2.4.2.1-RELEASE</version>
+    </dependency>
+
     <!-- shiro end -->
     <!--h2 database-->
     <dependency>

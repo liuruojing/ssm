@@ -1,9 +1,11 @@
 package cn.jarvan.shiro;
 
 import cn.jarvan.commons.Serializable.SerializableUtils;
-import cn.jarvan.commons.jedis.JedisUtils;
+import cn.jarvan.commons.jedis.RedisManager;
+import org.apache.log4j.Logger;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 
 import java.util.Collection;
 import java.util.Set;
@@ -11,7 +13,7 @@ import java.util.Set;
 /**
  * <b><code>ShiroRedisCache</code></b>
  * <p>
- * Description.
+ * 自定义缓存的操纵类.
  * <p>
  * <b>Creation Time:</b> 2018/7/30 11:49.
  *
@@ -23,19 +25,38 @@ public class ShiroRedisCache<K,V> implements Cache<K,V>{
     private static final String CACHE_NAME = "shiro_cache:";
     //缓存的名字
     private String name;
+    private static Logger logger = Logger.getLogger(Cache.class);
+    public ShiroRedisCache(){}
+    public RedisManager getRedisManager() {
+        return redisManager;
+    }
 
-    public ShiroRedisCache(String name) {
-        this.name=CACHE_NAME+name;
+    public void setRedisManager(RedisManager redisManager) {
+        this.redisManager = redisManager;
+        this.redisManager.init();
+    }
+
+    private RedisManager redisManager;
+    public ShiroRedisCache(String name,RedisManager redisManager) {
+        this.name=name;
+        setRedisManager(redisManager);
     }
     @Override
     public V get(K key) throws CacheException {
         try {
-            byte[] keyByte = SerializableUtils.serialize(buildCacheKey(key));
+            byte[] keyByte;
+            if(key instanceof String) {
+                keyByte = buildCacheKey(key).getBytes();
+            }
+            else{
+                keyByte = SerializableUtils.serialize(key);
+            }
             byte[] valueByte;
-            valueByte = JedisUtils.get(keyByte); //查找缓存
+            valueByte = redisManager.get(keyByte); //查找缓存
             return (V) SerializableUtils.deserialize(valueByte); //反序列化成对象
         }
         catch(Exception e){
+            logger.error(e);
             throw new CacheException(e);
         }
     }
@@ -44,31 +65,47 @@ public class ShiroRedisCache<K,V> implements Cache<K,V>{
     public V put(K key, V value) throws CacheException {
         try {
             V previos=get(key); //获取之前的value
-            byte[] keyByte = SerializableUtils.serialize(buildCacheKey(key));
+            byte[] keyByte;
+            if(key instanceof String) {
+                keyByte = buildCacheKey(key).getBytes();
+            }
+            else {
+                keyByte = SerializableUtils.serialize(key);
+            }
+
             byte[] keyValue = SerializableUtils.serialize(value);
-            JedisUtils.put(keyByte, keyValue);
+            redisManager.set(keyByte, keyValue);
             return previos;
         }
         catch (Exception e){
+            logger.error(e);
             throw  new CacheException(e);
         }
-        }
+    }
 
     @Override
     public V remove(K key) throws CacheException {
         try {
-            V previos = get(key);
-            JedisUtils.remove(SerializableUtils.serialize(buildCacheKey(key)));
-            return previos;
+            //获取上一次存的value
+            V previous = get(key);
+            byte[] keyByte;
+            if(key instanceof String){
+                keyByte=buildCacheKey(key).getBytes();
+            } else {
+                keyByte=SerializableUtils.serialize(key);
+            }
+            redisManager.del(keyByte);
+            return previous;
         }
         catch(Exception e) {
+            logger.error(e);
             throw new CacheException(e);
         }
     }
 
     @Override
     public void clear() throws CacheException {
-    // 以下方法无须重写 不会被授权调用 无关紧要
+        // 以下方法无须重写 不会被授权调用 无关紧要
     }
 
     @Override
