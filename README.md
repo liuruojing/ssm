@@ -26,7 +26,7 @@ jdk1.8+mysql5.7.22+tomcat8.5.32+IDEA<br/>
 ====
 第一次部署项目<br/>
 1.修改ssm-rs\resources目录下db.properties的数据库账号密码信息<br/>
-2.启动redis服务端，修改ssm-commons\resources目录下jedis.properties的redis连接信息，没设置密码的话auth留空<br/>
+2.启动redis服务端，修改ssm-rs\resources\spring-config目录下spring-shiro.xml中redis的连接信息，没设置密码的话auth留空<br/>
 2.创建数据库train_db并执行根目录下的train_db.sql数据库脚本<br/>
 3.进入到ssm-build目录下，执行clean install -Dmaven.test.skip=true，对整个项目进行构建<br/> 
 4.启动ssm-rs项目，浏览器访问http://localhost/ssm-rs/swagger-ui.html<br/>
