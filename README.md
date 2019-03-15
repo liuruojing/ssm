@@ -7,7 +7,7 @@ Introduction
 4.配置文档中包含丰富的注释，搭建思路清晰的ssm项目框架<br/>
 5.项目中的所有细节都会按照企业级开发的标准，展示如何遵循代码规范以及类文件doc注释的编写。<br/>
 6.采用RESTFul的controller接口，展示RESTFul风格的API编写(shiro基于url的权限拦截与RESTFul API兼容性不好，后期可能会改写shiro以匹配RESTFul)<br/>
-7.Junit单元测试，展示如何正确的使用Junit单元测试验证自己接口代码的健壮性，个人博客中也会出相应博文教学如何查看Junit单元测试的代码覆盖率<br/>
+7.Junit单元测试，展示如何正确的使用Junit单元测试验证自己接口代码的健壮性<br/>
 
 涉及到的技术
 ====
@@ -58,7 +58,7 @@ http://119.29.59.101/blog/index.action<br/>
 
 联系方式
 ====
-809882301@qq.com<br/>
+lruojing@foxmail.com<br/>
 
 need your help
 ====
